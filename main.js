@@ -16,7 +16,7 @@ const computerPlay = () => {
 //Simlutates rock, paper, scissors game based on player and com choice
 const rpsGame = (playerChoice, comChoice) => {
 
-    //If statment that checks for game winner and if a tie was played
+    //statment that checks for game winner based on choice
     if ((playerChoice === 'Rock' && comChoice === 'Scissor') || (comChoice === 'Rock' && playerChoice === 'Scissor')) {
 
         if (playerChoice === 'Rock') {
@@ -41,9 +41,6 @@ const rpsGame = (playerChoice, comChoice) => {
             return('Computer Wins! Scissors beat Paper!')
         }
     }
-
-    console.log(playerChoice)
-    console.log(comChoice)
 }
 
 
@@ -52,14 +49,12 @@ const playerPick = () => {
 
     let validName = false
 
-    //While loop that runs until player choice is valid
     while (validName === false) {
 
         //Allows for player input on choice and formats it(capitalized)
         let playerChoice = prompt('Please make a choice that is allowed:').toLowerCase()
         playerChoice = playerChoice.charAt(0).toUpperCase() + playerChoice.slice(1);
 
-        //Checks to see if name is valid with required choices
         if (playerChoice === 'Rock' || playerChoice === 'Paper' || playerChoice === 'Scissor') {
 
             validName = true;
@@ -103,7 +98,6 @@ const fiveRoundMatch = () => {
         }
 
         let finalSelections = preGameCheck()
-
         const winner = rpsGame(finalSelections[0], finalSelections[1])
 
         //Evaluates winner message in order to increment correct count on winner
