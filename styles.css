@@ -47,10 +47,13 @@ body {
   color: var(--green-grey);
 }
 
-.game-desc h1 {
+.flex-score {
+  display: flex;
+  justify-content: center;
+  gap: 175px;
   font-size: 60px;
   font-weight: 900;
-  margin-right: 50px;
+  margin-right: 20px;
   font-family: "Bebas Neue";
 }
 
@@ -113,6 +116,11 @@ button:hover {
   background: url(img/scissor.png);
   background-repeat: no-repeat;
   background-size: 200px;
+}
+
+#player-score,
+#com-score {
+  border-bottom: 7px solid #773fbf;
 }
 
 .footer {

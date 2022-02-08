@@ -1,3 +1,10 @@
+const rockButton = document.querySelector('#rock');
+const paperButton = document.querySelector('#paper');
+const scissorButton = document.querySelector('#scissor');
+const updateRound = document.querySelector('#update-round');
+const playerScore = document.querySelector('#player-score');
+const comScore = document.querySelector('#com-score');
+
 //using random num gen to decide a rps choice for computer player
 const computerPlay = () => {
     const computerPick = Math.floor(Math.random() * 3) + 1
@@ -43,48 +50,16 @@ const rpsGame = (playerChoice, comChoice) => {
     }
 }
 
-
-//Function for player choice and validation of choice
-const playerPick = () => {
-
-    let validName = false
-
-    while (validName === false) {
-
-        //Allows for player input on choice and formats it(capitalized)
-        let playerChoice = prompt('Please make a choice that is allowed:').toLowerCase()
-        playerChoice = playerChoice.charAt(0).toUpperCase() + playerChoice.slice(1);
-
-        if (playerChoice === 'Rock' || playerChoice === 'Paper' || playerChoice === 'Scissor') {
-
-            validName = true;
-            return playerChoice
-        }
-    }
-
-    
-}
-
 //Begins pregame by allowing selection and making sure a tie isnt in order
-const preGameCheck = () => {
-    
-    let gameContinue = false;
-    let playerChoice;
-    let computerChoice;
+const preGameCheck = (playerChoice, comChoice) => {
+    let gameContinue = true;
 
-    while (gameContinue === false) {
-        playerChoice = playerPick()
-        computerChoice = computerPlay();
-    
-        if (playerChoice != computerChoice) {
-            gameContinue = true;
-        } else {
-            console.log('Game has resulted in a tie! Please play again.')
-        }
+    if (playerChoice === comChoice) {
+
 
     }
-
-    return ([playerChoice, computerChoice]);
+    
+    return gameContinue;
 }
 
 //Simulates a best of 5 RPS game using rpsGame()
@@ -115,7 +90,36 @@ const fiveRoundMatch = () => {
     console.log(roundDecision)
 }
 
-fiveRoundMatch()
+//Manipulates DOM to put player choice against computer choice
+const moveVersus = (pChoice, comChoice) => {
+    paperButton.style.display = 'none';
+    
+
+}
+
+const updateRpsGame = (selection) => {
+    const comChoice = computerPlay();
+    const playerChoice = selection;
+
+    moveVersus(playerChoice, comChoice);
+
+    const gameCheck = preGameCheck(playerChoice, comChoice)
+
+
+}
+
+rockButton.addEventListener('click', function () {
+    updateRpsGame('Rock');
+})
+
+paperButton.addEventListener('click', () => {
+    updateRpsGame('Paper');
+});
+scissorButton.addEventListener('click', () => {
+    updateRpsGame('Scissor');
+});
+
+// fiveRoundMatch()
 
 
 

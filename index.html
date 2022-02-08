@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rock, Paper, Scissors!</title>
     <link rel="stylesheet" href="styles.css">
+    <script src="main.js" defer></script>
 </head>
 <body>
 
@@ -16,12 +17,16 @@
 
     <section class="main-content">
         <div class="game-desc">
-            <h1>Best of 5</h1>
+            <div class="flex-score">
+                <h1 id="player-score">0</h1>
+                <h1>Best of 5</h1>
+                <h1 id="com-score">0</h1>
+            </div>
             <h2>Player <span class="vs-span">Vs.</span> Computer</h2>
         </div>
 
         <div class="selection">
-            <h2>Please make a selection for Round 1</h2>
+            <h2 id="update-round">Please make a selection for Round 1</h2>
         </div>
 
         <div class="game">
@@ -38,5 +43,4 @@
 
     
 </body>
-<!-- <script src="main.js"></script> -->
 </html>
