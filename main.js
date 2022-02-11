@@ -4,6 +4,29 @@ const scissorButton = document.querySelector('#scissor');
 const updateRound = document.querySelector('#update-round');
 const playerScore = document.querySelector('#player-score');
 const comScore = document.querySelector('#com-score');
+const gameDiv = document.querySelector('.game');
+
+const resetButton = document.createElement('button');
+const leftFireworkButton = document.createElement('button');
+const rightFireworkButton = document.createElement('button');
+
+//Initializes variables for game
+let roundCounter = 1;
+let playerCounter = 0;
+let comCounter = 0;
+
+const disableButtons = () => {
+    rockButton.setAttribute('disabled', 'disabled');
+    paperButton.setAttribute('disabled', 'disabled');
+    scissorButton.setAttribute('disabled', 'disabled');
+}
+
+const enableButtons = () => {
+    rockButton.removeAttribute('disabled');
+    paperButton.removeAttribute('disabled');
+    scissorButton.removeAttribute('disabled');
+}
+
 
 //using random num gen to decide a rps choice for computer player
 const computerPlay = () => {
@@ -50,79 +73,159 @@ const rpsGame = (playerChoice, comChoice) => {
     }
 }
 
-//Begins pregame by allowing selection and making sure a tie isnt in order
-const preGameCheck = (playerChoice, comChoice) => {
-    let gameContinue = true;
-
-    if (playerChoice === comChoice) {
-
-
-    }
-    
-    return gameContinue;
-}
-
 //Simulates a best of 5 RPS game using rpsGame()
-const fiveRoundMatch = () => {
-    let playerCounter = 0;
-    let comCounter = 0;
+const fiveRoundMatch = (winner) => {
 
-    for (let i = 0; i < 5; i++) {
-        if (playerCounter === 3 || comCounter === 3) {
-            break;
-        }
-
-        let finalSelections = preGameCheck()
-        const winner = rpsGame(finalSelections[0], finalSelections[1])
-
-        //Evaluates winner message in order to increment correct count on winner
-        if ('You' === winner.slice(0,3)) {
-            playerCounter++
-        } else {
-            comCounter++
-        }
-        console.log(winner)
+    //Evaluates winner message in order to increment correct count on winner
+    if ('You' === winner.slice(0,3)) {
+        playerCounter++
+        playerScore.textContent = `${playerCounter}`;
+    } else {
+        comCounter++
+        comScore.textContent = `${comCounter}`;
     }
 
-    //Conditional for final decision on winner of Best of 5
-    let roundDecision = (playerCounter > comCounter) ? 'Player wins Bo5 Match!' : 'Computer wins Bo5 Match!'
-    
-    console.log(roundDecision)
+    if (playerCounter === 3 || comCounter === 3) {
+        const finalsWinner = playerCounter > comCounter;
+        endGame(finalsWinner);
+    }
+
 }
 
 //Manipulates DOM to put player choice against computer choice
-const moveVersus = (pChoice, comChoice) => {
-    paperButton.style.display = 'none';
+const gameSetup = (pChoice, comChoice) => {
     
+    //Creates new div for versus text in game
+    const div = document.createElement('div');
+    const p = document.createElement('p');
+    p.textContent = "VS."
+    p.classList.add('versus-game');
 
+
+    //Changes the middle image into versus div
+    div.appendChild(p);
+    gameDiv.insertBefore(div, scissorButton);
+    paperButton.style.display = 'none';
+
+    changeIcons(pChoice, comChoice);
+
+    resetStage(pChoice, comChoice);
 }
 
-const updateRpsGame = (selection) => {
+//Changes icons of buttons based on choice
+const changeIcons = (pChoice, comChoice) => {
+    if (pChoice === "Rock" && comChoice === "Scissor") return;
+    if (pChoice === "Paper") rockButton.id = "paper";
+    if (pChoice === "Scissor") rockButton.id = "scissor";
+    if (comChoice === "Rock") scissorButton.id = "rock";
+    if (comChoice === "Paper") scissorButton.id = "paper";
+}
+
+//Resets game stage if round is over or tie
+const resetStage = (pChoice, comChoice) => {
+    
+    if (pChoice === comChoice) {
+        setTimeout(() => {
+            updateRound.textContent = "There has been a tie! Please choose again"
+
+            //Adds paper button back and removes vs div
+            const children = gameDiv.children;
+            children[2].remove();
+            paperButton.style.display = "";
+
+            rockButton.id = "rock";
+            scissorButton.id = "scissor";
+
+            enableButtons();
+        }, 2000);
+    } else {
+        const winner = rpsGame(pChoice, comChoice);
+
+        setTimeout(() => {
+            roundCounter++;
+            updateRound.textContent = `${winner} Round ${roundCounter}`;
+
+            //Adds paper button back and removes vs div
+            const children = gameDiv.children;
+            children[2].remove();
+            paperButton.style.display = "";
+
+            rockButton.id = "rock";
+            scissorButton.id = "scissor";
+
+            enableButtons();
+
+            fiveRoundMatch(winner);
+        }, 2000);
+    }
+}
+
+const gameBegin = (selection) => {
+    //Disable all buttons so spam clicking isn't a problem
+    disableButtons()
+
     const comChoice = computerPlay();
     const playerChoice = selection;
 
-    moveVersus(playerChoice, comChoice);
+    gameSetup(playerChoice, comChoice);
+}
 
-    const gameCheck = preGameCheck(playerChoice, comChoice)
+//Best of 5 winner decided along with reset button
+const endGame = (finalWinner) => {
+    if (finalWinner) {
+        updateRound.textContent = "Best of 5 Over! Player Wins!"
+    } else {
+        updateRound.textContent = "Best of 5 Over! Computer Wins!"
+    }
 
+    leftFireworkButton.classList.add('firework');
+    rightFireworkButton.classList.add('firework-mirror');
+    resetButton.id = "reset-button";
+    resetButton.textContent = "Play Again";
 
+    rockButton.style.display = "none";
+    paperButton.style.display = "none";
+    scissorButton.style.display = "none";
+
+    gameDiv.appendChild(leftFireworkButton);
+    gameDiv.appendChild(resetButton);
+    gameDiv.appendChild(rightFireworkButton);
+    leftFireworkButton.style.display = "";
+    rightFireworkButton.style.display = "";
+    resetButton.style.display = "";
+}
+
+const resetGame = () => {
+    leftFireworkButton.style.display = "none";
+    rightFireworkButton.style.display = "none";
+    resetButton.style.display = "none";
+
+    rockButton.style.display = "";
+    paperButton.style.display = "";
+    scissorButton.style.display = "";
+    
+    roundCounter = 1;
+    playerCounter = 0;
+    comCounter = 0;
+
+    updateRound.textContent = "Please make a selection for Round 1";
+    playerScore.textContent = `${playerCounter}`;
+    comScore.textContent = `${comCounter}`;
 }
 
 rockButton.addEventListener('click', function () {
-    updateRpsGame('Rock');
+    gameBegin('Rock');
 })
 
 paperButton.addEventListener('click', () => {
-    updateRpsGame('Paper');
+    gameBegin('Paper');
 });
 scissorButton.addEventListener('click', () => {
-    updateRpsGame('Scissor');
+    gameBegin('Scissor');
 });
 
-// fiveRoundMatch()
-
-
-
-
-
-
+gameDiv.addEventListener('click', (e) => {
+    if(e.target.id == "reset-button") {
+        resetGame();
+    }
+})

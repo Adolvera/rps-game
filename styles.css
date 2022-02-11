@@ -91,11 +91,18 @@ button {
   border: none;
 }
 
-button:hover {
+.rock-icon:hover,
+.paper-icon:hover,
+.scissor-icon:hover {
   transform: scale(1.1);
   cursor: pointer;
   border-bottom: 3px solid var(--green-grey);
 
+}
+
+#reset-button:hover {
+  transform: scale(1.1);
+  cursor: pointer;
 }
 
 #rock {
@@ -118,6 +125,31 @@ button:hover {
   background-size: 200px;
 }
 
+.firework {
+  margin-top: 10px;
+  background: url(img/fireworks.png);
+  background-repeat: no-repeat;
+  background-size: 200px;
+}
+
+.firework-mirror {
+  margin-top: 10px;
+  background: url(img/fireworks.png);
+  background-repeat: no-repeat;
+  background-size: 200px;
+  transform: scaleX(-1);
+}
+
+#reset-button {
+  margin-top: 15px;
+  border: 7px solid var(--green-grey);
+  border-radius: 5px;
+  background-color: var(--background-color);
+  color: white;
+  font-size: 48px;
+  font-family: "Bebas Neue";
+}
+
 #player-score,
 #com-score {
   border-bottom: 7px solid #773fbf;
@@ -137,6 +169,12 @@ button:hover {
   font-size: 24px;
   font-weight: 700;
   margin-right: 30px;
+}
+
+.versus-game {
+  font-size: 48px;
+  font-weight: 900;
+  color: var(--green-grey);
 }
 
 
