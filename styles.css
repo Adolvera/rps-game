@@ -17,6 +17,9 @@
 body {
   font-family: "Heebo";
   background-color: var(--background-color);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .header {
